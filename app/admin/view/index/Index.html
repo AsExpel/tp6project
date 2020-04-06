@@ -12,7 +12,7 @@
           {$test1}
         </th>
         <th>
-          <input id="get_input1" value="35" />
+          <input id="get_input1" value="" />
           <button onclick="user_seach('1')">编辑</button>
         </th>
         <th rowspan="2">
@@ -24,7 +24,7 @@
           {$test2}
         </th>
         <th>
-          <input id="get_input2" value="金建丽" />
+          <input id="get_input2" value="" />
           <button onclick="user_seach(2)">编辑</button>
         </th>
       </tr>
@@ -74,7 +74,8 @@
               console.log(e.responseText);
             }
           });
-        } else if (value === 2) {
+        } else
+          if (value === 2) {
           $get_input = $("input:text[id='get_input2']").val();
           console.log($get_input);
           var _url = url + "get_name_to_id";
@@ -112,9 +113,10 @@
               console.log(e.responseText);
             }
           });
-        } else if (value === "3") {
+        } else
+          if (value === "3") {
           console.log("all");
-          var _url = url + "get_all_user";
+          var _url = url + "get_all_bug";
           $.ajax({
             //请求方式
             type: "POST",
@@ -132,11 +134,11 @@
                 // console.log(element, " ", i);
                 $("#display").append(
                   "id:",
-                  element.user_id,
+                  element.bug_id,
                   " name:",
-                  element.name,
+                  element.bug_name,
                   " age:",
-                  element.age,
+                  element.bug_tag,
                   "<br/>"
                 );
               });

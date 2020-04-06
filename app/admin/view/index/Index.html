@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>admin_index</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>
+          {$test1}
+        </th>
+        <th>
+          <input id="get_input1" value="35" />
+          <button onclick="user_seach('1')">编辑</button>
+        </th>
+        <th rowspan="2">
+          <button onclick="user_seach('3')">全部导出</button>
+        </th>
+      </tr>
+      <tr>
+        <th>
+          {$test2}
+        </th>
+        <th>
+          <input id="get_input2" value="金建丽" />
+          <button onclick="user_seach(2)">编辑</button>
+        </th>
+      </tr>
+      <tr>
+        <th id="display" colspan="2"></th>
+      </tr>
+    </table>
+
+    <script type="text/javascript">
+      let url = document.URL + "/index/";
+
+      function user_seach(value) {
+        if (value == "1") {
+          $get_input = $("input:text[id='get_input1']").val();
+          var _url = url + "get_id_to_name";
+          console.log(_url);
+          let search = {
+            id: $get_input
+          };
+          //Ajax Reqwest strand for  .
+          $.ajax({
+            //请求方式
+            type: "POST",
+            //请求地址
+            url: _url,
+            //in
+            data: search,
+            //out
+            complete() {},
+            success(result) {
+              $("#display").empty();
+              // console.log(result);
+              let item = $.parseJSON(result);
+              $("#display").append(
+                "id:",
+                item[0].user_id,
+                " name:",
+                item[0].name,
+                " age:",
+                item[0].age
+              );
+              // console.log(item);
+            },
+            //请求失败，包含具体的错误信息
+            error(e) {
+              console.log(e.status);
+              console.log(e.responseText);
+            }
+          });
+        } else if (value === 2) {
+          $get_input = $("input:text[id='get_input2']").val();
+          console.log($get_input);
+          var _url = url + "get_name_to_id";
+
+          let search = {
+            name: $get_input
+          };
+          //Ajax Reqwest strand for  .
+          $.ajax({
+            //请求方式
+            type: "POST",
+            //请求地址
+            url: _url,
+            //in
+            data: search,
+            //out
+            complete() {},
+            success(result) {
+              $("#display").empty();
+              console.log(result);
+              let item = $.parseJSON(result);
+              $("#display").append(
+                "id:",
+                item[0].user_id,
+                " name:",
+                item[0].name,
+                " age:",
+                item[0].age
+              );
+              // console.log(item);
+            },
+            //请求失败，包含具体的错误信息
+            error(e) {
+              console.log(e.status);
+              console.log(e.responseText);
+            }
+          });
+        } else if (value === "3") {
+          console.log("all");
+          var _url = url + "get_all_user";
+          $.ajax({
+            //请求方式
+            type: "POST",
+            //请求地址
+            url: _url,
+            //in
+            data: "",
+            //out
+            complete() {},
+            success(result) {
+              $("#display").empty();
+              // console.log(result);
+              let item = $.parseJSON(result);
+              item.forEach((element, i) => {
+                // console.log(element, " ", i);
+                $("#display").append(
+                  "id:",
+                  element.user_id,
+                  " name:",
+                  element.name,
+                  " age:",
+                  element.age,
+                  "<br/>"
+                );
+              });
+
+              // console.log(item);
+            },
+            //请求失败，包含具体的错误信息
+            error(e) {
+              console.log(e.status);
+              console.log(e.responseText);
+            }
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

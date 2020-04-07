@@ -6,41 +6,88 @@
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body>
-    <table>
-      <tr>
-        <th>
-          {$test1}
-        </th>
-        <th>
-          <input id="get_input1" value="" />
-          <button onclick="user_seach('1')">编辑</button>
-        </th>
-        <th rowspan="2">
-          <button onclick="user_seach('3')">全部导出</button>
-        </th>
-      </tr>
-      <tr>
-        <th>
-          {$test2}
-        </th>
-        <th>
-          <input id="get_input2" value="" />
-          <button onclick="user_seach(2)">编辑</button>
-        </th>
-      </tr>
-      <tr>
-        <th id="display" colspan="2"></th>
-      </tr>
-    </table>
+  <table>
+    <tr>
+      <th colspan="3"><a>就做个简单的跳转吧！</a></th>
+    </tr>
+    <tr>
+      <th>
+        <a href="Index.html">首页</a>
+      </th>
+      <th>
+        <a href="demo.html">扇形图</a>
+      </th>
+      <th>
+        <a href="action.html">爬取</a>
+      </th>
+    </tr>
+    <tr>
+      <th colspan="3">
+        <button onclick="url_href('')">test</button>
+      </th>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <th colspan="3"><a>就做个简单的跳转吧！</a></th>
+    </tr>
 
-    <script type="text/javascript">
+    <tr>
+      <th>
+        {$test1}
+        <!--          从控制器（controller）中获取变量test1中的数据 -->
+      </th>
+      <th>
+        <input id="get_input1" value="" />
+        <button onclick="user_seach('1')">编辑</button>
+      </th>
+      <th rowspan="2">
+        <button onclick="user_seach('3')">全部导出</button>
+      </th>
+    </tr>
+    <tr>
+      <th>
+        {$test2}
+      </th>
+      <th>
+        <input id="get_input2" value="" />
+        <button onclick="user_seach(2)">编辑</button>
+      </th>
+    </tr>
+    <tr>
+      <th id="display" colspan="2"></th>
+    </tr>
+  </table>
+
+
+  <script type="text/javascript">
       let url = document.URL + "/index/";
+      function url_href($in_url) {
+        console.log($in_url);
+        $href_url=url+'redirect_function/';
+        $.ajax({
+          type: "POST",
+          url: $href_url,
+          data:'demo',
+          complete(){
+            console.log('complete');
+          },
+          success(){
 
+          },
+          error(e) {
+            console.log(e.status);
+            // console.log(e.responseText);
+          },
+        })
+      }
       function user_seach(value) {
-        if (value == "1") {
+        if (value === "1") {
+          // === 近乎等同于 ==，但 === 可以判断变量类型是否相等，更加规范
           $get_input = $("input:text[id='get_input1']").val();
-          var _url = url + "get_id_to_name";
-          console.log(_url);
+          // 定义get_input变量，获取输入框的值
+          var _url = url + "get_id_to_bug";
+          console.log(_url+'  '+this.action);
           let search = {
             id: $get_input
           };
@@ -60,11 +107,11 @@
               let item = $.parseJSON(result);
               $("#display").append(
                 "id:",
-                item[0].user_id,
+                item[0].bug_id,
                 " name:",
-                item[0].name,
-                " age:",
-                item[0].age
+                item[0].bug_name,
+                " tag:",
+                item[0].bug_tag,
               );
               // console.log(item);
             },
@@ -98,12 +145,12 @@
               console.log(result);
               let item = $.parseJSON(result);
               $("#display").append(
-                "id:",
-                item[0].user_id,
-                " name:",
-                item[0].name,
-                " age:",
-                item[0].age
+                      "id:",
+                      item[0].bug_id,
+                      " name:",
+                      item[0].bug_name,
+                      " tag:",
+                      item[0].bug_tag,
               );
               // console.log(item);
             },
@@ -130,16 +177,18 @@
               $("#display").empty();
               // console.log(result);
               let item = $.parseJSON(result);
+              $("#display").append("</th>");
               item.forEach((element, i) => {
                 // console.log(element, " ", i);
                 $("#display").append(
-                  "id:",
-                  element.bug_id,
-                  " name:",
-                  element.bug_name,
-                  " age:",
-                  element.bug_tag,
-                  "<br/>"
+                        "<th colspan=\"2\">",
+                        "id:",
+                        element.bug_id,
+                        " name:",
+                        element.bug_name,
+                        " tag:",
+                        element.bug_tag,
+                        "</th>",
                 );
               });
 

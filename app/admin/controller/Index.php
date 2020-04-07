@@ -4,6 +4,7 @@ declare (strict_types = 1);
 namespace app\admin\controller;
 
 use app\admin\model\buglist;
+use http\Url;
 use think\Console;
 use think\facade\Db;
 use think\facade\Log;
@@ -37,16 +38,23 @@ class Index
      * @access public
      */
     public function get_all_bug(){
-        $this->dateRandom();
+//        $this->dateRandom();
         $ans=buglist::get_all();
 //        var_dump($ans);
         return $ans;
     }
-    public function get_id_to_name(Request $request) {
+//echo '===================';
+//var_dump($elements);
+//echo '===================';
+    public function redirectfunction($next_url){
+        echo $next_url;
+        return redirect('http://www.baidu.com');
+    }
+    public function get_id_to_bug(Request $request) {
         $ans=buglist::search_id_bug((int) $_REQUEST["id"])
             ->map(
                 function (buglist $buglistselector){
-                    unset($buglistselector["password"]);
+//                    unset($buglistselector["password"]);
                     return $buglistselector;
                 }
             );
@@ -77,13 +85,13 @@ class Index
         $first=array('张','王','李','赵','金','艾','单','龚','钱','周','吴','郑','孔','曺','严','华','吕','徐','何');
         $middle=array('芳','军','集','建','明','辉','芬','红','丽','憨','功','');
         $last=array('明','芳','华','民','敏','憨','成','丽','辰','楷','龙','雪','凡','锋','芝','笑',);
-        $tag1=array('1231wqad','87g8yg3','67899kjo','57812312');
+        $tag1=array('tag1','tag2','tag3','tag4');
         $tag2=array('asd','ijbi','jhihjb','jkl','zxc','bnm');
         //$email3=array('@163.com','@137.com','@gmail.com','@173.com','@qq.com');
         //$passwd1=array('1234','5678','147','258');
         $i=0;
-        for($i=1;$i<10;$i++){
-            $name=$first[random_int(1,18)] . $middle[random_int(0,8)] . $last[random_int(1,13)];
+        for($i=1;$i<100;$i++){
+            $name=$first[random_int(1,18)] . $middle[random_int(0,11)] . $last[random_int(1,13)];
             $tag=$tag1[random_int(0,3)];// . $tag2[random_int(0,5)];
             $data = ['bug_id' => $i, 'bug_name' =>$name,'bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>$tag,'remarks'=>''];
             $result = Db::name('buglist')->insert($data);

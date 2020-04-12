@@ -20,8 +20,7 @@ class Index
 
         View::assign('test2','name搜索');
 
-        View::assign('index');
-
+        View::assign('index','这是个表格');
         return View::fetch('index');
         // 使用内置PHP模板引擎渲染模板输出
 //        return View::engine('php')->fetch('Index');
@@ -40,14 +39,12 @@ class Index
     public function get_all_bug(){
 //        $this->dateRandom();
         $ans=buglist::get_all();
-//        var_dump($ans);
         return $ans;
     }
-//echo '===================';
-//var_dump($elements);
-//echo '===================';
-    public function redirectfunction($next_url){
+    public function redirectfunction(Request $next_url){
         echo $next_url;
+        dump($next_url);
+        die();
         return redirect('http://www.baidu.com');
     }
     public function get_id_to_bug(Request $request) {
@@ -99,5 +96,14 @@ class Index
         }
 //        echo '成功添加了'.$i.'条记录';
 
+    }
+    public function demo(){
+//        $sql="SELECT 'bug_id','bug_name' FROM 'buglist' WHERE 'bug_id'=:id LIMIT :num";
+//        $map=['id'=>1,'num'=>1];
+        $data=['bug_name'=>'test','bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>1];
+//        $res=Db::table('buglist')->where('bug_id',3)->find();
+        $res=Db::table('buglist')->insert($data);
+//        $res=Db::table('buglist')->where('bug_id',@@identity);
+        dump($res);
     }
 }

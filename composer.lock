@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af4c1d3fa817eb8c58caa9a7ec0362b0",
+    "content-hash": "2b65b6adbedc977dffc76ebce2ef9270",
     "packages": [
         {
             "name": "league/flysystem",
@@ -689,16 +689,16 @@
         },
         {
             "name": "topthink/think-view",
-            "version": "v1.0.13",
+            "version": "v1.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-view.git",
-                "reference": "90803b73f781db5d42619082c4597afc58b2d4c5"
+                "reference": "edce0ae2c9551ab65f9e94a222604b0dead3576d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-view/zipball/90803b73f781db5d42619082c4597afc58b2d4c5",
-                "reference": "90803b73f781db5d42619082c4597afc58b2d4c5",
+                "url": "https://api.github.com/repos/top-think/think-view/zipball/edce0ae2c9551ab65f9e94a222604b0dead3576d",
+                "reference": "edce0ae2c9551ab65f9e94a222604b0dead3576d",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -728,7 +728,7 @@
                 }
             ],
             "description": "thinkphp template driver",
-            "time": "2019-10-07T12:23:10+00:00"
+            "time": "2019-11-06T11:40:13+00:00"
         }
     ],
     "packages-dev": [
@@ -1000,7 +1000,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "ext-json": "*"
     },
     "platform-dev": []
 }

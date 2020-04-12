@@ -1,106 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>admin_index</title>
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-  </head>
-  <body>
-  <table>
-    <tr>
-      <th colspan="3"><a>就做个简单的跳转吧！</a></th>
-    </tr>
-    <tr>
-      <th>
-        <a href="Index.html">首页</a>
-      </th>
-      <th>
-        <a href="demo.html">扇形图</a>
-      </th>
-      <th>
-        <a href="action.html">爬取</a>
-      </th>
-    </tr>
-    <tr>
-      <th colspan="3">
-        <button onclick="url_href('')">test</button>
-      </th>
-    </tr>
-  </table>
-  <table>
-    <tr>
-      <th colspan="3"><a>{$index}</a></th>
-    </tr>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>admin_index</title>
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+<body>
+    <input id="exec_input">
+    <button onclick="post_exec()">test exec</button>
+    <div id="append">a</div>
 
-    <tr>
-      <th>
-        {$test1}
-        <!--          从控制器（controller）中获取变量test1中的数据 -->
-      </th>
-      <th>
-        <input id="get_input1" value="" />
-        <button onclick="user_seach('1')">编辑</button>
-      </th>
-      <th rowspan="2">
-        <button onclick="user_seach('3')">全部导出</button>
-      </th>
-    </tr>
-    <tr>
-      <th>
-        {$test2}
-      </th>
-      <th>
-        <input id="get_input2" value="" />
-        <button onclick="user_seach(2)">编辑</button>
-      </th>
-    </tr>
-    <tr>
-      <th>名称</th>
-      <th>标签</th>
-      <th>备注</th>
-      <th rowspan="2">
-        <button onclick="add_bug()">添加</button>
-      </th>
-    </tr>
-    <tr>
-      <th>
-        <input id="new_bug_name">
-      </th>
-      <th>
-        <input id="new_bug_tag">
-      </th>
-      <th>
-        <input id="new_bug_remark">
-      </th>
-    </tr>
-    <tr>
-      <th id="display" colspan="2"></th>
-    </tr>
-  </table>
+    <script type="text/javascript">
+        let url = document.URL + "/index/";
+        $(document).ready(
+            function (){
+          var _url = url + "get_all_bug";
+          $.ajax({
+            //请求方式
+            type: "POST",
+            //请求地址
+            url: _url,
+            //in
+            data: '',
+            //out
+            complete() {},
+            success(result) {
+              $("#append").empty();
+              // console.log(result);
+              let item = $.parseJSON(result);
+                item.forEach((element, i) => {
+                    $("#append").append(function (n) {
+                        return(
+                            "<div>" +
+                            "id:" +
+                            element.bug_id +
+                            " name:" +
+                            element.bug_name +
+                            " tag:"+
+                            element.bug_tag +
+                            "</div>"
+                        );
+                    }
+                    )
+                });
+              // console.log(item);
+            },
+            //请求失败，包含具体的错误信息
+            error(e) {
+              console.log(e.status);
+              console.log(e.responseText);
+            }
+          });
 
-
-  <script type="text/javascript">
-      let url = document.URL + "/index/";
-      function url_href($in_url) {
-        console.log($in_url);
-        $href_url=url+'redirect_function/';
+        },
+        );
+        function post_exec() {
+        $get_input = $("input:text[id='exec_input']").val();
+        // console.log($get_input);
+        var _url = url + "exec_action";
+        let command={
+          command:$get_input,
+        };
         $.ajax({
-          type: "POST",
-          url: $href_url,
-          data:'demo',
-          complete(){
-            console.log('complete');
-          },
-          success(){
+            //请求方式
+            type: "POST",
+            //请求地址
+            url: _url,
+            data: command,
+            complete() {},
+            success(result) {
+                // let _result=$.parse(result);
+                // result = encodeURI(encodeURI(result));
+                console.log(result);
+                // console.log(decodeURIComponent(result.replace(/%/g, '%25')));
+            },
+            //请求失败，包含具体的错误信息
+            error(e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        });
+    }
 
-          },
-          error(e) {
-            console.log(e.status);
-            // console.log(e.responseText);
-          },
-        })
-      }
-      function user_seach(value) {
+
+
+        function url_href($in_url) {
+            console.log($in_url);
+            $href_url=url+'redirect_function/';
+            $.ajax({
+              type: "POST",
+              url: $href_url,
+              data:'demo',
+              complete(){
+                console.log('complete');
+              },
+              success(){
+
+              },
+              error(e) {
+                console.log(e.status);
+                // console.log(e.responseText);
+              },
+            })
+        }
+        function user_seach(value) {
         if (value === "1") {
           // === 近乎等同于 ==，但 === 可以判断变量类型是否相等，更加规范
           $get_input = $("input:text[id='get_input1']").val();
@@ -220,45 +223,6 @@
           });
         }
       }
-      function add_bug() {
-        $get_input_name = $("input:text[id='new_bug_name']").val();
-        $get_input_tag = $("input:text[id='new_bug_tag']").val();
-        $get_input_remark=$("input:text[id='new_bug_remark']").val();
-        // 定义get_input变量，获取输入框的值
-        var _url = url + "demo";
-        let new_data={
-
-        };
-        $.ajax({
-          //请求方式
-          type: "POST",
-          //请求地址
-          url: _url,
-          //in
-          data: new_data,
-          //out
-          complete() {},
-          success(result) {
-            $("#display").empty();
-            // console.log(result);
-            let item = $.parseJSON(result);
-            $("#display").append(
-                    "id:",
-                    item[0].bug_id,
-                    " name:",
-                    item[0].bug_name,
-                    " tag:",
-                    item[0].bug_tag,
-            );
-            // console.log(item);
-          },
-          //请求失败，包含具体的错误信息
-          error(e) {
-            console.log(e.status);
-            console.log(e.responseText);
-          }
-        });
-      }
     </script>
-  </body>
+</body>
 </html>

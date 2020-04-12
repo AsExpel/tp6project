@@ -2,11 +2,20 @@
 declare (strict_types = 1);
 
 namespace app\demo\controller;
+use think\facade\View;
 
 class Index
 {
     public function index()
     {
-        return '您好！这是一个[demo]示例应用';
+//        $view = new View();
+
+//        $view->assign('title', '视图测试');
+//        $view->assign('content', '这是一个视图类的示例');
+//
+//        $view->display('template.php');
+        return View::fetch('index');
     }
 }
+
+

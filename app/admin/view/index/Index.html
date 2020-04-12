@@ -70,7 +70,7 @@
         <input id="new_bug_tag">
       </th>
       <th>
-        <input id="new_bug_remark">
+        <input id="new_bug_remarks">
       </th>
     </tr>
     <tr>
@@ -223,11 +223,13 @@
       function add_bug() {
         $get_input_name = $("input:text[id='new_bug_name']").val();
         $get_input_tag = $("input:text[id='new_bug_tag']").val();
-        $get_input_remark=$("input:text[id='new_bug_remark']").val();
+        $get_input_remarks=$("input:text[id='new_bug_remarks']").val();
         // 定义get_input变量，获取输入框的值
         var _url = url + "demo";
         let new_data={
-
+            new_name:$get_input_name,
+            new_tag:$get_input_tag,
+            new_remarks:$get_input_remarks,
         };
         $.ajax({
           //请求方式
@@ -239,18 +241,7 @@
           //out
           complete() {},
           success(result) {
-            $("#display").empty();
-            // console.log(result);
-            let item = $.parseJSON(result);
-            $("#display").append(
-                    "id:",
-                    item[0].bug_id,
-                    " name:",
-                    item[0].bug_name,
-                    " tag:",
-                    item[0].bug_tag,
-            );
-            // console.log(item);
+            console.log(result);
           },
           //请求失败，包含具体的错误信息
           error(e) {

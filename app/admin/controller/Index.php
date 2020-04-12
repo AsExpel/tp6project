@@ -87,20 +87,24 @@ class Index
         //$email3=array('@163.com','@137.com','@gmail.com','@173.com','@qq.com');
         //$passwd1=array('1234','5678','147','258');
         $i=0;
-        for($i=1;$i<100;$i++){
+        for($i=1;$i<30;$i++){
             $name=$first[random_int(1,18)] . $middle[random_int(0,11)] . $last[random_int(1,13)];
             $tag=$tag1[random_int(0,3)];// . $tag2[random_int(0,5)];
-            $data = ['bug_id' => $i, 'bug_name' =>$name,'bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>$tag,'remarks'=>''];
+//            $data = ['bug_id' => $i, 'bug_name' =>$name,'bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>$tag,'remarks'=>''];
+            $data = ['bug_name' =>$name,'bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>$tag,'remarks'=>''];
             $result = Db::name('buglist')->insert($data);
             var_dump("in");
         }
 //        echo '成功添加了'.$i.'条记录';
 
     }
-    public function demo(){
+    public function demo(Request $request){
 //        $sql="SELECT 'bug_id','bug_name' FROM 'buglist' WHERE 'bug_id'=:id LIMIT :num";
 //        $map=['id'=>1,'num'=>1];
-        $data=['bug_name'=>'test','bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>1];
+        $new_bug_name=$_REQUEST["new_name"];
+        $new_bug_tag=$_REQUEST["new_tag"];
+        $new_bug_remarks=$_REQUEST["new_remarks"];
+        $data=['bug_name'=>$new_bug_name,'bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>$new_bug_tag,'remarks'=>$new_bug_remarks];
 //        $res=Db::table('buglist')->where('bug_id',3)->find();
         $res=Db::table('buglist')->insert($data);
 //        $res=Db::table('buglist')->where('bug_id',@@identity);

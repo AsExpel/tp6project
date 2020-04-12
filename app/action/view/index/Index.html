@@ -8,6 +8,8 @@
 <body>
     <input id="exec_input">
     <button onclick="post_exec()">test exec</button>
+    <label for="file_input"><input id="file_input" value="1.txt"></label>
+    <button onclick="read_file()">test exec</button>
     <div id="append">a</div>
 
     <script type="text/javascript">
@@ -77,10 +79,34 @@
             //请求失败，包含具体的错误信息
             error(e) {
                 console.log(e.status);
-                console.log(e.responseText);
+                // console.log(e.responseText);
             }
         });
     }
+        function read_file() {
+            $get_input = $("input:text[id='file_input']").val();
+            // console.log($get_input);
+            var _url = url + "read_file";
+            let file={
+                txtname:$get_input,
+            };
+            $.ajax({
+                //请求方式
+                type: "POST",
+                //请求地址
+                url: _url,
+                data: file,
+                complete() {},
+                success(result) {
+                    console.log(result);
+                },
+                //请求失败，包含具体的错误信息
+                error(e) {
+                    console.log(e.status);
+                    // console.log(e.responseText);
+                }
+            });
+        }
 
 
 

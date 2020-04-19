@@ -4,41 +4,15 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>admin_index</title>
         <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+        <script src="__JS__/echarts.min.js" type="text/javascript"></script><!--引入echarts-->
     </head>
 <body>
-    <canvas id="myChart" width="200" height="200"></canvas>
+    <div id="main" style="width: 1000px;height:600px;"></div>
 
     <script type="text/javascript">
         let url = document.URL + "/index/";
-        //原型
-        var Canvas = function(ele,num){
-            this.ele = ele;
-            this.num = num;
-            this.ctx = this.ele.getContext("2d");
-            this.color = ["#21a74f","#b3e5f1","#3498db","#2ecc71","#f1c40f","#e67e22"];
-            this.draw();
-        };
-        Canvas.prototype.draw=function(){
-            var j=0,j1=0,j2=0,angle=0;
-            var sum=0;
-            for(var i=0;i<this.num.length;i++){
-                sum=sum+this.num[i];
-            }
 
-            for(var i=0;i<this.num.length;i++){
-                j=2*Math.PI*this.num[i]/sum;
-                j2=j1+j;
-                this.ctx.beginPath();
-                this.ctx.fillStyle=this.color[i];
-                this.ctx.arc(this.ele.width/2,this.ele.height/2,120,j1,j2,false);
-                this.ctx.lineTo(this.ele.width/2,this.ele.height/2);
-                this.ctx.closePath();
-                this.ctx.fill();
-                angle=j1+j/2;
-                j1=j1+j;
-            }
-        };
+
         $(document).ready(
             function (){
           var _url = url + "get_all_bug";
@@ -52,62 +26,78 @@
             //out
             complete() {},
             success(result) {
-              $("#append").empty();
               // console.log(result);
               let   item = $.parseJSON(result),
-                    datalist=[],
-                    taglist=[];
-              item.forEach((element, i) => {
-                  if(!datalist[element.bug_tag]) {
-                      var arr = [];
-                      arr.push(element);
-                      taglist.push(element.bug_tag);
-                      datalist[element.bug_tag] = arr;
-                  }else {
-                      datalist[element.bug_tag].push(element);
-                  }
-              });
-              var ctx = document.getElementById("myChart").getContext('2d');
-              var num1=[];
-              taglist.forEach((element,i)=>{
-                  num1.push(datalist[element].length);
-              });
-              var myChart = new Chart(ctx, {
-                  type: 'pie',
-                  data: {
-                      labels: taglist,
-                      datasets: [{
-                          label: '# of Votes',
-                          data: num1,
-                          backgroundColor: [
-                              'rgba(255, 99, 132, 0.2)',
-                              'rgba(54, 162, 235, 0.2)',
-                              'rgba(255, 206, 86, 0.2)',
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(153, 102, 255, 0.2)',
-                              'rgba(255, 159, 64, 0.2)'
-                          ],
-                      }]
-                  },
-                  options: {
-                      responsive: true
-                  }
-              });
+                    dataList=[],//用于记录各tag的数目
+                    tagList=[];//用于存储各tag
+
+                for(let i=0;i<item.length;i++){
+                    //循环整个item
+                    let hasTag=false;//“是否是新tag”标记
+                    for(let ii=0;ii<tagList.length;ii++){
+                        //循环整个tagList
+                        if(item[i].bug_tag===tagList[ii].toString()){   //如果数据中的bug_tag与已有tag相等
+                            dataList[ii]++;
+                            hasTag=true;                                //变更标记，不需要新增tag
+                            break;                                      //已找到对应tag，跳出ii循环
+                        }
+                    }
+                    if(!hasTag){                                        //如果没有已有标签对应
+                        var newArray=[''];                              //定义一个数组
+                        newArray[0]=item[i].bug_tag.toString();         //赋值为新bug_tag
+                        tagList.push(newArray);                         //加入已有tag中
+                        dataList[tagList.length-1]=1;                   //dataList数组+1长度，赋初始值为1
+                    }
+                }
+                let chartData=[{}];                                     //新建json对象数组(“[]”是数组，“{}”是对象)
+                for(let ii=0;ii<tagList.length;ii++){
+                    let newObject={'name':tagList[ii],'value':dataList[ii]};//新建对象
+                    chartData.push(newObject);                          //将新对象加入chartData
+                }
 
 
-                // $("#append").append(function (n) {
-                //     return(
-                //         "<div>" +
-                //         "id:" +
-                //         element.bug_id +
-                //         " name:" +
-                //         element.bug_name +
-                //         " tag:"+
-                //         element.bug_tag +
-                //         "</div>"
-                //     );
-                // })
-              // console.log(item);
+                console.log(chartData);
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('main'));
+                var option={
+                    backgroundColor: '#2c343c',//定义背景色
+                    textStyle: {
+                        color: 'rgba(255, 255, 255, 0.3)'//定义文字颜色
+                    },
+                    series : [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: '10%',                                  //饼状图半径
+                            data:chartData,                                //将chartData输出
+                            roseType: 'angle',
+
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 200,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            },
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        color: 'rgba(255, 255, 255, 0.3)'
+                                    }
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    lineStyle: {
+                                        color: 'rgba(255, 255, 255, 0.3)'
+                                    }
+                                }
+                            }
+
+                        }
+                    ]//定义序列，交由Echarts渲染
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
             },
             //请求失败，包含具体的错误信息
             error(e) {
@@ -115,12 +105,7 @@
               console.log(e.responseText);
             }
           });
-
-
-
-
         },
-
         );
     </script>
 </body>

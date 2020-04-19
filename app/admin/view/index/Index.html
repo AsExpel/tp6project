@@ -29,12 +29,12 @@
   </table>
   <table>
     <tr>
-      <th colspan="3"><a>{$index}</a></th>
+      <th colspan="3"><a>这是一个标题</a></th>
     </tr>
 
     <tr>
       <th>
-        {$test1}
+        id搜索
         <!--          从控制器（controller）中获取变量test1中的数据 -->
       </th>
       <th>
@@ -47,7 +47,7 @@
     </tr>
     <tr>
       <th>
-        {$test2}
+        name搜索
       </th>
       <th>
         <input id="get_input2" value="" />
@@ -80,7 +80,7 @@
 
 
   <script type="text/javascript">
-      let url = document.URL + "/index/";
+      let url = document.URL + "/index/"; //document.URL返回的是当前页面的地址 index是当前控制器名
       function url_href($in_url) {
         console.log($in_url);
         $href_url=url+'redirect_function/';
@@ -106,7 +106,6 @@
           $get_input = $("input:text[id='get_input1']").val();
           // 定义get_input变量，获取输入框的值
           var _url = url + "get_id_to_bug";
-          console.log(_url+'  '+this.action);
           let search = {
             id: $get_input
           };
@@ -119,10 +118,10 @@
             //in
             data: search,
             //out
-            complete() {},
+            // complete() {},
             success(result) {
               $("#display").empty();
-              // console.log(result);
+              console.log(result);
               let item = $.parseJSON(result);
               $("#display").append(
                 "id:",
@@ -225,7 +224,7 @@
         $get_input_tag = $("input:text[id='new_bug_tag']").val();
         $get_input_remarks=$("input:text[id='new_bug_remarks']").val();
         // 定义get_input变量，获取输入框的值
-        var _url = url + "demo";
+        var _url = url + "insert_bug";
         let new_data={
             new_name:$get_input_name,
             new_tag:$get_input_tag,

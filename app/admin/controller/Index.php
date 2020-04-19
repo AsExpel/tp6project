@@ -16,15 +16,19 @@ class Index
     public function index()
     {
 //        $this->dateRandom();
-        View::assign('test1','id搜索');
-
-        View::assign('test2','name搜索');
-
-        View::assign('index','这是个表格');
+//        View::assign('test1','id搜索');
+//
+//        View::assign('test2','name搜索');
+//
+//        View::assign('index','这是个表格');
         return View::fetch('index');
         // 使用内置PHP模板引擎渲染模板输出
 //        return View::engine('php')->fetch('Index');
 //        return '您好！这是一个[admin]示例应用';
+    }
+    public function details()
+    {
+        return View::fetch('details');
     }
     /**
      * @var \think\Request Request实例
@@ -41,20 +45,14 @@ class Index
         $ans=buglist::get_all();
         return $ans;
     }
-    public function redirectfunction(Request $next_url){
-        echo $next_url;
-        dump($next_url);
-        die();
-        return redirect('http://www.baidu.com');
-    }
+//    public function redirectfunction(Request $next_url){
+//        echo $next_url;
+//        dump($next_url);
+//        die();
+//        return redirect('http://www.baidu.com');
+//    }
     public function get_id_to_bug(Request $request) {
-        $ans=buglist::search_id_bug((int) $_REQUEST["id"])
-            ->map(
-                function (buglist $buglistselector){
-//                    unset($buglistselector["password"]);
-                    return $buglistselector;
-                }
-            );
+        $ans=buglist::search_id_bug((int) $_REQUEST["id"]);
 
         return json_encode($ans, JSON_UNESCAPED_UNICODE);
     }
@@ -91,14 +89,14 @@ class Index
             $name=$first[random_int(1,18)] . $middle[random_int(0,11)] . $last[random_int(1,13)];
             $tag=$tag1[random_int(0,3)];// . $tag2[random_int(0,5)];
 //            $data = ['bug_id' => $i, 'bug_name' =>$name,'bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>$tag,'remarks'=>''];
-            $data = ['bug_name' =>$name,'bug_submit_time'=>date("Ymdhi",time()),'bug_tag'=>$tag,'remarks'=>''];
+            $data = ['bug_name' =>$name,'bug_submit_time'=>1,'bug_tag'=>$tag,'remarks'=>''];
             $result = Db::name('buglist')->insert($data);
             var_dump("in");
         }
 //        echo '成功添加了'.$i.'条记录';
 
     }
-    public function demo(Request $request){
+    public function insert_bug(Request $request){
 //        $sql="SELECT 'bug_id','bug_name' FROM 'buglist' WHERE 'bug_id'=:id LIMIT :num";
 //        $map=['id'=>1,'num'=>1];
         $new_bug_name=$_REQUEST["new_name"];
